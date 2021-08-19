@@ -120,16 +120,6 @@ function onGameLoginError(message)
     end
 end
 
-function onGameLoginToken(unknown)
-    CharacterList.destroyLoadBox()
-    -- TODO: make it possible to enter a new token here / prompt token
-    errorBox = displayErrorBox(tr("Two-Factor Authentification"),
-                               'A new authentification token is required.\nPlease login again.')
-    errorBox.onOk = function()
-        errorBox = nil
-        EnterGame.show()
-    end
-end
 
 function onGameConnectionError(message, code)
     CharacterList.destroyLoadBox()
@@ -156,7 +146,6 @@ end
 -- public functions
 function CharacterList.init()
     connect(g_game, {onLoginError = onGameLoginError})
-    connect(g_game, {onLoginToken = onGameLoginToken})
     connect(g_game, {onUpdateNeeded = onGameUpdateNeeded})
     connect(g_game, {onConnectionError = onGameConnectionError})
     connect(g_game, {onGameStart = CharacterList.destroyLoadBox})
@@ -170,7 +159,6 @@ end
 
 function CharacterList.terminate()
     disconnect(g_game, {onLoginError = onGameLoginError})
-    disconnect(g_game, {onLoginToken = onGameLoginToken})
     disconnect(g_game, {onUpdateNeeded = onGameUpdateNeeded})
     disconnect(g_game, {onConnectionError = onGameConnectionError})
     disconnect(g_game, {onGameStart = CharacterList.destroyLoadBox})
